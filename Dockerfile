@@ -1,16 +1,17 @@
 # set base os
 FROM linuxserver/baseimage.nginx
 
-MAINTAINER Mark Burford <sparklyballs@gmail.com>
+MAINTAINER Mark Burford <sparklyballs@gmail.com>, Kode <kodestar@linuxserver.io>
 
-# set some environment variables
-ENV DATADIR="/config/databases"
+# set some environment variables for mariadb to give us our paths
+ENV MARIADB_DIR="/config/mariadb"
+ENV DATADIR=$MARIADB_DIR/databases
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
 
 # set ports
-EXPOSE 80 443 3306
+EXPOSE 443 3306
 
 # update apt and install packages
 RUN apt-get update && \
@@ -29,14 +30,10 @@ apt-get install \
 mysqltuner -qy && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# tweak my.cnf
-RUN sed -i -e 's#\(log_error.*=\).*#\1 /config/databases/mysql_safe.log#g' /etc/mysql/my.cnf && \
-sed -i -e 's/\(user.*=\).*/\1 abc/g' /etc/mysql/my.cnf && \
-sed -i -e "s#\(datadir.*=\).*#\1 $DATADIR#g" /etc/mysql/my.cnf
-
 #Adding Custom files
 RUN mkdir -p /defaults 
 ADD defaults/ /defaults/ 
+RUN cp /etc/mysql/my.cnf /defaults/my.cnf
 ADD init/ /etc/my_init.d/
 ADD services/ /etc/service/
 RUN chmod -v +x /etc/service/*/run
