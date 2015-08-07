@@ -10,20 +10,6 @@ sleep 1
 done
 }
 
-if [ ! -d "/config/log/mariadb" ]; then
-mkdir -p /config/log/mariadb
-fi
-
-
-if [ ! -d "$DATADIR" ]; then
-mkdir -p $DATADIR
-fi
-
-if [ ! -d "/var/run/mysqld" ]; then
-mkdir -p /var/run/mysqld
-chmod -R 777 /var/run/mysqld
-fi
-
 if [ ! -d "$DATADIR/mysql" ]; then
 tempSqlFile='/tmp/mysql-first-time.sql'
 cat > "$tempSqlFile" <<-EOSQL
@@ -43,6 +29,5 @@ wait "$pid"
 chown -R abc:abc "$MARIADB_DIR" /config/log/mariadb
 echo "Database Setup Conpleted"
 fi
-
 chown -R abc:abc /var/run/mysqld
 
