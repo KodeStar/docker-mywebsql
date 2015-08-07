@@ -11,3 +11,6 @@ rm mywebsql.zip
 chown -R abc:abc /config/www/mywebsql
 fi
 
+if [ ! "$ stat -c %a /etc/mysql/debian.cnf" = "644" ]; then
+chmod 644 /etc/mysql/debian.cnf
+fi

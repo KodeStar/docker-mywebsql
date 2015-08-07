@@ -30,6 +30,9 @@ apt-get install \
 mysqltuner -qy && \
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Tweak my.cnf for networking...
+RUN sed -ri 's/^(bind-address|skip-networking)/;\1/' /etc/mysql/my.cnf
+
 #Adding Custom files
 RUN mkdir -p /defaults 
 ADD defaults/ /defaults/ 
