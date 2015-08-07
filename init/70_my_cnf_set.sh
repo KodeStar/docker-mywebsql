@@ -9,7 +9,7 @@ chown abc:abc "$MARIADB_DIR"/my.cnf
 chmod 666 "$MARIADB_DIR"/my.cnf
 fi
 
-s#/var/log/mysql#/config/log/mariadb#g "$MARIADB_DIR"/my.cnf
+sed -i s#/var/log/mysql#/config/log/mariadb#g "$MARIADB_DIR"/my.cnf
 sed -i -e 's/\(user.*=\).*/\1 abc/g' "$MARIADB_DIR"/my.cnf
 sed -i -e "s#\(datadir.*=\).*#\1 $DATADIR#g" "$MARIADB_DIR"/my.cnf
 cp "$MARIADB_DIR"/my.cnf /etc/mysql/my.cnf
