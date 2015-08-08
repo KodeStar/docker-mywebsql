@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ ! -d "/config/log/mariadb" ]; then
-mkdir -p /config/log/mariadb
+if [ ! -d "/config/log/myqsl" ]; then
+mkdir -p /config/log/mysql
 fi
 
 
