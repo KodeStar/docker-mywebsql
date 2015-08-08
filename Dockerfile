@@ -21,6 +21,7 @@ echo 'deb http://repo.percona.com/apt trusty main' > /etc/apt/sources.list.d/per
 RUN apt-get update && \
 apt-get install \
 percona-server-server-5.6 \
+percona-server-tokudb-5.6 \
 php5-mysql \
 php5-pgsql \
 wget \
