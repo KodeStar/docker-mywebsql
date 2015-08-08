@@ -23,21 +23,22 @@ EOSQL
 # set what to display if no password set with variable MYSQL_ROOT_PASSWORD
 NOPASS_SET='/tmp/no-pass.nfo'
 cat > $NOPASS_SET <<-EOFPASS
-######################################################
-# Did you forget to add -e MYSQL_ROOT_PASSWORD=... ? #
-# No root user password , databases will be insecure #
-# This is not a good thing  you shoud set one.       #
-######################################################
+#################################################################
+# No root password or too short a password ,min of 4 characters #
+# No root password will be set, this is not a good thing        #
+# You shoud set one after initialisation with the command       #
+#          mysqladmin -u root password <PASSWORD>               #
+#################################################################
 EOFPASS
 
-# test for empty password variable or if it's set to 0
+# test for empty password variable, if it's set to 0 or less than 4 characters
 if [ -z "$MYSQL_ROOT_PASSWORD" ]; then
-echo >&2 "$(cat /tmp/no-pass.nfo)"
-sleep 5s
-MYSQL_PASS="CREATE USER 'root'@'%' IDENTIFIED BY '' ;"
-elif [  "$MYSQL_ROOT_PASSWORD" -eq "0"  ]; then
-echo >&2 "$(cat /tmp/no-pass.nfo)"
-sleep 5s
+THE_PASS_TEST="0"
+else
+THE_PASS_TEST="$MYSQL_ROOT_PASSWORD"
+fi
+TEST_LEN=${#THE_PASS_TEST}
+if [ "$TEST_LEN" -lt "4" ]; then
 MYSQL_PASS="CREATE USER 'root'@'%' IDENTIFIED BY '' ;"
 else
 MYSQL_PASS="CREATE USER 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' ;"
@@ -64,6 +65,12 @@ start_mysql
 mysqladmin -u root shutdown
 wait "$pid"
 echo "Database Setup Conpleted"
+
+# display a message about password if not set or too short
+if [ "$TEST_LEN" -lt "4" ]; then
+echo >&2 "$(cat /tmp/no-pass.nfo)"
+sleep 5s
+fi
 
 # do some more owning to finish our first run sequence
 chown -R abc:abc "$MYSQL_DIR" /config/log/mysql
