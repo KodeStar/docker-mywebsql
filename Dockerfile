@@ -15,7 +15,7 @@ EXPOSE 443 3306
 
 # add percona repo
 RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 430BDF5C56E7C94E848EE60C1C4CBDCDCD2EFD2A && \
-echo 'deb http://repo.percona.com trusty main' > /etc/apt/sources.list.d/percona.list
+echo 'deb http://repo.percona.com/apt trusty main' > /etc/apt/sources.list.d/percona.list
 
 # update apt and install packages
 RUN apt-get update && \
