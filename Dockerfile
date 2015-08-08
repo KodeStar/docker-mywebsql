@@ -7,23 +7,20 @@ MAINTAINER Mark Burford <sparklyballs@gmail.com>, Kode <kodestar@linuxserver.io>
 ENV MYSQL_DIR="/config/mysql"
 ENV DATADIR=$MYSQL_DIR/databases
 
-# set the repo version for mariadb choose between 5.5 or 10.0
-ENV REPO_VER 10.0
-
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
 
 # set ports
 EXPOSE 443 3306
 
-# add mariadb repo
-RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db && \
-add-apt-repository "deb http://mirrors.coreix.net/mariadb/repo/$REPO_VER/ubuntu trusty main"
+# add percona repo
+RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys 430BDF5C56E7C94E848EE60C1C4CBDCDCD2EFD2A && \
+echo 'deb http://repo.percona.com trusty main' > /etc/apt/sources.list.d/percona.list
 
 # update apt and install packages
 RUN apt-get update && \
 apt-get install \
-mariadb-server \
+percona-server-server-5.6 \
 php5-mysql \
 php5-pgsql \
 wget \
