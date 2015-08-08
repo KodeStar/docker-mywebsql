@@ -7,11 +7,18 @@ MAINTAINER Mark Burford <sparklyballs@gmail.com>, Kode <kodestar@linuxserver.io>
 ENV MYSQL_DIR="/config/mysql"
 ENV DATADIR=$MYSQL_DIR/databases
 
+# set the repo version for mariadb choose between 5.5 or 10.0
+ENV REPO_VER 10.0
+
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
 
 # set ports
 EXPOSE 443 3306
+
+# add mariadb repo
+RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db && \
+add-apt-repository "deb http://mirrors.coreix.net/mariadb/repo/$REPO_VER/ubuntu trusty main"
 
 # update apt and install packages
 RUN apt-get update && \
