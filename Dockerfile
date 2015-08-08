@@ -4,8 +4,8 @@ FROM linuxserver/baseimage.nginx
 MAINTAINER Mark Burford <sparklyballs@gmail.com>, Kode <kodestar@linuxserver.io>
 
 # set some environment variables for mariadb to give us our paths
-ENV MARIADB_DIR="/config/mariadb"
-ENV DATADIR=$MARIADB_DIR/databases
+ENV MYSQL_DIR="/config/mysql"
+ENV DATADIR=$MYSQL_DIR/databases
 
 # Use baseimage-docker's init system
 CMD ["/sbin/my_init"]
