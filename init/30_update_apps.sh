@@ -3,4 +3,5 @@
 
 apt-get update -qq && \
 apt-get --only-upgrade install \
-mariadb-server -qqy
+percona-server-server-5.6 \
+percona-server-tokudb-5.6 -qqy
